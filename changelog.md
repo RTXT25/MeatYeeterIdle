@@ -1,300 +1,297 @@
-# The Modding Tree changelog:
+# Changelog
+All notable changes to this project will be documented in this file.
 
-## v2.π: Incrementally Updated - 2/5/21
-- Performance improvements.
-- Fixed tooltips overlapping with the top display.
-- Clicking a popup dismisses it immediately.
-- Added support for bulk challenge completions.
-- "Best" is updated automatically.
-- Fixed keeping Decimal values on reset.
-- Code reorganization and style improvements by fudo.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v2.3.5 - 12/21/20
-- Added resetTime, which tracks the time since a layer prestiged or was reset.
-- A layer node will be highlighted red if one of its subtabs is highlighted red.
-- Fixed issues with keeping challenges, buyables, and clickables on reset.
-- Improved the unlocking of custom layers.
-- Other minor fixes.
+## [Unreleased]
 
-## v2.3.4 - 12/16/20
-- Added a node image feature.
-- Resource display now always shows the amount of the currency the layer's gain is based on.
-- Added spacing between tree nodes.
-- Another attempt to fix tooltip flickering.
+## [0.5.1] - 2022-07-17
+### Added
+- Notif component that displays a jumping exclamation point
+- showAmount boolean to buyable displays
+- Tab families now take option to style the tab buttons container
+- Utility for creating text of a certain color
+### Changed
+- Improved typing of player.layers
+- Improved typing of createCollapsibleModifierSections's parameters
+- Made Particles vue component typed as GenericComponent due to issues generating documentation
+- Minimized how much of pixi.js is included in the built site
+- Split bundles into smaller bundles for faster loading
+- Updated TypeScript
+- Descriptions on buyables are now optional
+- Improved tooltips performance
+- Improved how MainDisplay displays effect strings
+- MainDisplays are now sticky
+- processComputable now binds uncached functions as well
+### Fixed
+- trackResetTime stopped working once its layer was removed and re-added
+- Runtime compilation was disabled in vite config
+- Websites had to be hosted on root directory to have assets load correctly
+- Tooltips' persistent ref was lazily created
+- In some situations Links would not update its bounding rect
+- Achievements' and milestones' onComplete callbacks were firing on load
+- Processed JSXFunctions were not considered coercable components by isCoercableComponent
+- Error from passing in overlay text to bar component
+### Removed
+- lodash.cloneDeep dependency, which hasn't been used in awhile
+- Some unused configs from vue-cli-service
+### Documented
+- Update vitepress, and updated the content of many pages
+- Rest of /game
+- Rest of /data
+- layers.tsx
+- Any type augmentations to Window object
+- Various cleanup of docs comments
+- Fixed doc generation being broken from switch to vite
+### Tests
+- Switched from jest to vitest
 
-## v2.3.3 - 12/13/20
-- Fixed the first node in a row always taking up space.
-- layerShown is now optional.
-- All prestige types can now use features for custom prestige types.
+## [0.5.0] - 2022-06-27
+### Added
+- Projects now cache for offline play, and show notification when an update is available
+- Projects can now be "installed" as a Progressive Web App
+- Conversions can now be given a custom spend function, which defaults to setting the base resource amount to 0
+- Components for displaying Floor and Square Root symbols
+### Changed
+- **BREAKING** Several projInfo properties now default to empty strings, to prevent things like reusing project IDs
+- **BREAKING** Replaced vue-cli-service with vite (should not break most projects)
+- Updated dependencies
+- Made all type-only imports explicit
+- setupPassiveGeneration now works properly on independent conversions
+- setupPassiveGeneration now takes an option cap it can't go over
+- Improved typing for PlayerData.layers
+- Options Functions have an improved `this` type - it now includes the options themselves
+- Removed v-show being used in data/common.tsx
+### Tests
+- Implement Jest, and running tests automatically on push
+- Tests written for utils/common.ts
 
-## v2.3.2 - 12/13/20
-- Fixed achievement/milestone popups.
+## [0.4.2] - 2022-05-23
+### Added
+- costModifier to conversions
+- onConvert(amountGained) to conversions
+### Changed
+- **BREAKING** getFirstFeature has a new signature, that will lead to improved performance
+- trackResetTime is now intended to be used with a reset button
+- regularFormat handles small numbers better
+- Slider tooltips now appear below the slider, not above
+- Node's mutation observers now ignore attributes. This shouldn't have issues with links/particle effect positions, but prevents a _lot_ of unnecessary node updates
+- OptionsFunc no longer takes its S type parameter, as it was unnecessary. Layer options functions now have proper `this` typing
+    - Several functions have been updated to take BaseLayer instead of GenericLayer, to allow them to work with `this` inside layer options functions
+### Fixed
+- Particle effects and links would not always appear on reload or when switching layers
+- Particle effects and links no longer appear in wrong spot after nodes are added or removed
+- Collapsibles having wrong widths on the button and collapsed content sections
+- Additive modifiers with negative values appeared like "+-" instead of "-"
+- Buyables' onPurchase was not being called
+- Reset button would display "Next:" if the buyMax property is a ref
 
-## v2.3.1 - 12/12/20
-- Another attempt to fix flickering tooltips.
-- The "this" keyword should work everywhere except tabFormat arrays (although I may have missed some things).
-- Fixed tree branches not updating when scrolling on the right-side tab.
-- Fixed a spacing issue when a node's symbol is ""
-- Removed some old, unneeded files.
+## [0.4.1] - 2022-05-10
+### Added
+- findFeatures can now accept multiple feature types
+- excludeFeatures can now be used to find features with a feature type _blacklist_
+- All the icons in the saves manager now have tooltips
+### Changed
+- All touch events that can be passive now are
+- Layers' style and classes attributes are now applied to the tab element rather than the layer-tab
+- Saving now always uses lz-string, and saveEncoding has been renamed to exportEncoding
+    - The property will now only affect exports, and defaults to base64 so exports can be shared in more places without issues
+- Buyables can now have their onClick/purchase function overwritten
+### Fixed
+- Arrays in player were not being wrapped in proxies for things like NaN detection
+- Error when switching between saves with different layers
+- Links would sometimes error from trying to use nodes that were removed earlier that frame
+- createModifierSection would require modifiers to have revert and enabled properties despite not using them
+- Tab buttons would not use the style property if it was a ref
+- Typings on the Board vue component were incorrect
+- Offline time would always show, if offlineLimit is set to 0
+- Buyables will now call onPurchase() when cost and/or resource were not set
+- Presets dropdown wouldn't deselect the option after creating the save
+### Documented
+- feature.ts
 
-## v2.3: Cooler and Newer Edition - 12/10/20
-- Added achievement/milestone popups (thank you to Jacorb for this contribution!)
-- The changelog tab is back, and can be set in mod.js.
-- Layer nodes and respec buttons will not be clicked by pressing "enter".
-- Possible fix for flickering tooltips and strange transitions.
-- The victory screen text is configurable.
-- Added image and textStyle features to achievements.
-- Added an argument to use specific rows in an "upgrades" component.
-- Fixed the comma appearing in the main display when there was no effectDescription
-- Added the ability to easily make a tab that is a collection of layers in subtabs.
-- Improved spacing for embedding layers with subtabs into subtabs.
+## [0.4.0] - 2022-05-01
+### Added
+- Saves can now be encoded in two new options: plaintext and lz compressed, determined by a new "saveEncoding" property in projInfo
+    - Saves will be loaded in whatever format is detected. The setting only applies when writing saves
+- createModifierSection has new parameter to override the label used for the base value
+- createCollapsibleModifierSections utility function to display `createModifierSection`s in collapsible forms
+### Fixed
+- Saves manager would not clear the current save from its cache when switching saves, leading to progress loss if flipping between saves
+- Layer.minWidth being ignored
+- Separators between tabs (player.tabs) would not extend to the bottom of the screen when scrolling
+- Tree nodes not being clicked on their edges
+### Changed
+- **BREAKING** No features extend persistent anymore
+    - This will break ALL existing saves that aren't manually dealt with in fixOldSave
+    - Affected features: Achievement, Buyable, Grid, Infobox, Milestone, TabFamily, and Upgrade
+    - Affected features will now have a property within them where the persistent ref is stored. This means new persistent refs can now be safely added to these features
+- Features with option functions with 0 required properties now don't require passing in an options function
+- Improved the look of the goBack and minimize buttons (and made them more consistent with each other)
+- Newly created saves are immediately switched to
+- TooltipDirection and Direction have been merged into one enum
+- Made layers shallow reactive, so it works better with dynamic layers
+- Modifier functions all have more explicit types now
+- Scaling functions take computables instead of processed computables
+### Removed
+- Unused tsParticles.d.ts file
+### Documented
+- modifiers.ts
+- conversions.ts
 
+## [0.3.3] - 2022-04-24
+### Fixed
+- Spacing between rows in Tree components
+- Computed style attributes on tooltips were ignored
+- Tooltips could cause infinite loops due to cyclical dependencies
 
-### v2.2.8 - 12/03/20
-- Double-clicking a layer node brings you to the main subtab for that layer.
-- Attempted to fix challenges visually updating a different way.
-- Added a softcap function for use in formulas.
-- Added displayRow feature, which lets layers be shown somewhere separate from where they are in the reset order (e.g. side layers)
-- Fixed autoupgrade issue.
+## [0.3.2] - 2022-04-23
+### Fixed
+- Clickables and several other elements would not register clicks sometimes, if the display is updating rapidly
+- createLayerTreeNode wasn't using display option correctly
 
-### v2.2.7 - 11/30/20
-- Added autoUpgrade feature.
-- resource-display now shows resource gain per second if passiveGain is active.
-- Fixed formatting issues on some large numbers.
-- Better support for using classed objects in player and in layers/tmp.
-- Made hard resetting more effective.
-- Removed Herobrine from getStartClickables.
+## [0.3.1] - 2022-04-23
+### Added
+- Render utility methods that always return JSX Elements
+### Changed
+- **BREAKING** Tooltips overhaul
+    - Tree Nodes no longer have tooltips related properties
+    - Tooltips can now be added to any feature with a Vue component using the `addTooltip` function
+    - Any tooltip can be made pinnable by setting pinnable to true in the addTooltip options, or by passing a `Ref<boolean>` to a Tooltip component
+    - Pinned tooltips have an icon to represent that. It can be disabled by setting the theme's `showPin` property to false
+- Modifiers are now their own features rather than a part of conversions
+    - Including utilities to display the current state of all the modifiers
+- TabFamilies' options function is now optional
+- Layer.minWidth can take string values
+    - If parseable into a number, it'll have "px" appended. Otherwise it'll be un-processed
+- TreeNodes now have Vue components attached to them
+- `createResourceTooltip` now shows the resource name
+- Made classic and aqua theme's `feature-foreground` color dark rather than light
 
-### v2.2.6 - 11/30/20
-- Added goalDescription for challenges and made the new "canComplete" system the standard.
-- Another attempt to fix challenges not visually updating.
-- Fixed side layers not appearing.
-- Fixed getStartClickables again.
+## [0.3.0] - 2022-04-10
+### Added
+- conversion.currentAt [#4](https://github.com/profectus-engine/Profectus/pull/4)
+- OptionsFunc utility type, improving type inferencing in feature types
+- minimumGain property to ResetButton, defaulting to 1
+### Changed
+- **BREAKING** Major persistence rework
+    - Removed makePersistent
+    - Removed old Persistent, and renamed PersistentRef to Persistent
+    - createLazyProxy now takes optional base object (replacing use cases for makePersistent)
+    - Added warnings when creating refs outside a layer
+    - Added warnings when persistent refs aren't included in their layer object
+- **BREAKING** createLayer now takes id as the first param, rather than inside the option function
+- resetButton now shows "Req:" instead of "Next:" when conversion.buyMax is false
+- Conversion nextAt and currentAt now cap at 0 after reverting modifier
+### Fixed
+- Independent conversion gain calculation [#4](https://github.com/profectus-engine/Profectus/pull/4)
+- Persistence issue when loading layer dynamically
+- resetButton's gain and requirement display being incorrect when conversion.buyMax is false
+- Independent conversions with buyMax false capping incorrectly
 
-### v2.2.5 - 11/29/20
-- Added features for overriding the displays and costs/goals of upgrades and challenges to make them fully custom.
-- best, total, and unlocked are always automatically added to layerData (but best and total will only display if you add them yourself).
-- Fixed getStartClickables.
+## [0.2.2] - 2022-04-01
+Unironically posting an update on April Fool's Day ;)
+### Changed
+- **BREAKING** Replaced tsparticles with pixi-emitter. Different options, and behaves differently.
+- Print key and value in lazy proxy's setter message
+- Update bounding boxes after web fonts load in
+### Removed
+- safff.txt
 
-### v2.2.4 - 11/28/20
-- Added softcap and softcapPower features (for Normal layers)
-- Offline time limit and default max tick length were fixed (previously the limits were 1000x too large)
-- Added fixOldSaves.
-- You can use HTML in main-display.
-- Fixed a number of minor oddities.
+## [0.2.1] - 2022-03-29
+### Changed
+- **BREAKING** Reworked conversion.modifyGainAmount into conversion.gainModifier, with several utility functions. This makes nextAt accurate with modified gain
+### Fixed
+- Made overlay nav not overlap leftmost layer
 
-### v2.2.3 - 11/28/20
-- Layers will be highlighted if you can finish a challenge.
-- The "can complete challenge" color now overrides the "already completed" color.
-- Button nodes now work as side "layers".
-- Setting a tooltip to "" hides it entirely.
+## [0.2.0] - 2022-03-27
+### Added
+- Particles feature
+- Collapsible layout component
+- Utility function for splitting off the first from the list of features that meets a given filter
+### Changed
+- **BREAKING** Reworked most of the code from Links into a generic Context component that manages the positions of features in the DOM
+- Updated vue-cli and TS dependencies
+- Challenges cannot be started when maxed, and `canStart` now defaults to `true`
+- onClick listeners on various features now get passed a MouseEvent or TouchEvent when possible
+- Minor style changes to Milestones, most notably removing min-height
+### Fixed
+- Buyables didn't support CoercableComponents for displays
+- TreeNodes would have a double glow effect on hover
+### Removed
+- Unused mousemove listener attached to App.vue
 
-### v2.2.2 - 11/22/20
-- Fixed right half of the screen being unclickable in some circumstances.
-- Fixed tree branches being offset.
-- Fix to lastSafeTab.
+## [0.1.4] - 2022-03-13
+### Added
+- You can now access this.on() from within a createLayer function (and other BaseLayer properties)
+- Support for passing non-persistent refs to createResource
+- dontMerge class to allow features to ignore mergeAdjacent
+### Fixed
+- Clickables would not merge adjacent
+- onClick and onHold functions would not be bound to their object when being called
+- Refs passed to a components style prop would be ignored
+- Fixed z-index issue when stopping hovering over features with .can class
 
-### v2.2.1 - 11/7/20
-- Added a small highlight to layers you can meaningfully prestige on.
-- Added passiveGeneration and autoPrestige features to standardize prestige automation. (The old ways still work, but the new ones work better with other things)
-- Improved milestones visually a bit.
-- "best" and "total" are now only displayed if present in startData.
-- Fixed issues with things not updating visually. (Thank you to to Jacorb!)
-- Side layers and button nodes can now be highlighted.
-- Updated docs on the new tree-related features.
+## [0.1.3] - 2022-03-11
+### Added
+- Milestone.complete
+- Challenge.complete
+- setupAutoClick function to run a clickable's onClick every tick
+- setupAutoComplete function to attempt to complete a challenge every tick
+- isAnyChallengeActive function to query if any challenge from a given list is active
+- Hotkeys now appear in info modal, if any exist
+- projInfo.json now includes a "enablePausing" option that can be used to prevent the player from pausing the game
+- Added a "gameWon" global event
+### Changed
+- **BREAKING** Buyables now default to an infinite purchase limit
+- **BREAKING** devSpeed, playedTime, offlineTime, and diff now use numbers instead of Decimals
+- **BREAKING** Achievements and milestones now use watchEffect to check for completion, instead of polling each tick. shouldEarn properties now only accept functions
+- Cached more decimal values for optimization
+### Fixed
+- Many types not being exported
+- setupHoldToClick wouldn't stop clicking after a component is unmounted
+- Header's banner would not have correct width
+### Removed
+- **BREAKING** Removed setupAutoReset
+### Documentation
+- Support for documentation generation using typedoc
+- Hide main layer from docs
+- Hide prestige layer from docs
+- Use stub declaration files for libs that don't provide types (vue-panzoom and vue-textarea-autosize)
 
-## v2.2: Uprooted - 11/7/20
-- You can now embed a layer inside of a subtab or microtab!
-- Added support for hiding or reformatting the tree tab 
-- Added non-layer button nodes
-- Added shouldNotify to subtab/microtab buttons. (You can make them highlighted)
-- Added commas to large exponents.
-- Upgrades now only show "currently" if they have an effectDisplay (so not for constant effects).
-- Achievements are part of the default tab format.
-- NaN is now handled more intelligently.
-- Renamed files, and moved less relevant ones to another folder.
-- The "hide completed challenges" setting now only hides challenges at max completions.
-- Thank you to thepaperpilot for fixing errors in docs and improving the infobox appearance!
-- Many other minor fixes.
+## [0.1.2] - 2022-03-05
+### Changed
+- **BREAKING** Removed "@" path alias, and used baseUrl instead
+- **BREAKING** Renamed createExponentialScaling to createPolynomialScaling and removed coefficient parameter
+- Changed options passed into createLayerTreeNode; now allows overriding display
+- App component is no longer cloned before being passed to `createApp`
+- Changed TS version from ^4.5.4 to ~4.5.5
+### Fixed
+- Document title is set as soon as possible now
 
+## [0.1.1] - 2022-03-02
+### Added
+- Configuration for Glitch projects
+- Configuration for Replit projects
+- Hide versionTitle if blank
+### Changed
+- **BREAKING** Renamed modInfo.json -> projInfo.json
+- **BREAKING** Renamed mod.tsx -> projEntry.tsx
+- Improved performance of branch drawing code
+- Improved performance of formatting numbers
+- Changed some projInfo default values to empty strings
+- Renamed projInfo.allowSmall -> projInfo.defaultShowSmall
+### Fixed
+- Spacing on discord logo in NaN screen
+- Some files accessing old location for persistence code
+- Fixed lint-staged not being listed in devDependencies
+- Branch locations were not accurate after scrolling
+- Saves Manager displayed "default body" while closing
+- Reset buttons activating when held down when canClick is false
+- Lifting up on auto clickable elements not stopping the auto clicker
+### Removed
+- Removed Theme.stackedInfoboxes
+- Removed Theme.showSingleTab
 
-### v2.1.4 - 10/25/20
-- Added an infobox component. Thank you to thepaperpilot for this contribution!
-- Layer type is now optional, and defaults to "none".
-- Improved the look of bars and tab buttons.
-- Improved spacing between layer nodes (also thanks to thepaperpilot!)
-- Fixed the "blank" component breaking if only specifying the height.
-- Fixed some numbers not displaying with enough digits.
-- Made a few more things able to be functions.
-- A few other minor fixes.
-
-### v2.1.3.1 - 10/21/20
-- Fixed the update function.
-
-### v2.1.3 - 10/21/20
-- gainMult and gainExp are now optional.
-- Layer unlocking is now kept on reset.
-- Game should start up faster.
-- Layer updates now have a determined order and starts with earlier-rowed layers.
-- Automation now has a determined order and starts with later-rowed layers.
-- Fixed issues with resetting clickables and challenges.
-- Commas should no longer appear in the decimal places of a number.
-- Fixed potential issue in displaying the tree.
-
-### v2.1.2 - 10/19/20
-- Added buyUpgrade function (buyUpg still works though)
-- Added author name to modInfo.
-- Fix to crash caused when the name of a subtab or microtab is changed.
-- Fixes to outdated information in docs.
-- Improvements to Discord links.
-- Thank you to thepaperpilot for contributing to this update!
-
-### v2.1.1 - 10/17/20
-- Added resource-display component, which displays the base currency for the prestige layer, as well as the best
-    and/or total of this layer's prestige currency.
-- Fixed the value for the base currency not updating in resource-display.
-
-## v2.1: We should have thought of this sooner! - 10/17/20
-- Moved most of the code users will want to edit to mod.js, added documentation for it.
-    - Specifically, modInfo, VERSION, canGenPoints, getPointGen, and maxTickLength
-- Added getStartPoints()
-- Added the ability to store non-layer-related data
-- Added the ability to display more things at the top of the tree tab below points.
-- Made the endgame condition customizable
-- Added "sell one" and "sell all" buttons for buyables.
-- Moved the old "game" to demo.js, and replaced it with a minimal game that won't cause issues when edited.
-- Fixed issues with version number
-- Fixed number formatting issue making things like "10e9" appear.
-
-
-### v2.0.5 - 10/16/20
-- Made more features (including prestige parameters) able to be dynamic.
-- Layer nodes can be hidden but still take up space with "ghost" visibility
-- Added clickableEffect for real.
-- Fixed some visual issues with bars.
-- A few other minor tweaks and improvements.
-
-### v2.0.4 - 10/16/20
-- Fixed HTML on buttons interfering with clicking on them.
-
-### v2.0.3 - 10/16/20
-- Fixed hotkeys not displaying in info.
-- Fixed the game supressing all external hotkeys.
-- You can use more things as currencies for upgrade costs and challenge goals using currencyLocation.
-- Added maxTickLength, which can be used to prevent offline time or tab-switching from breaking time-limit based mechanics.
-- Made buyable respec buttons and clickable "master" buttons their own components, and gave them a hide/show feature.
-- Added a general "tooltip" feature for achievements.
-
-### v2.0.2 - 10/15/20
-- Branches are now dynamic (they can be functions).
-- Fixed a crash related to offline time.
-- Fixed links being too wide.
-
-### v2.0.1 - 10/15/20
-- Fixed side layers appearing multiple times.
-
-## v2.0: The Pinnacle of Achievement Mountain - 10/15/20
-- Added progress bars, which are highly customizable and can be horizontal or vertical!
-- Added "side layers", displayed smaller and off to the side, and don't get reset by default.
-    They can be used for global achievements and statistics. Speaking of which...
-- Added achievements!
-- Added clickables, a more generalized variant of buyables.
-- Almost every value in layer data can be either a function or a constant value!
-- Added support for multiple completions of challenges.
-- Added "none" prestige type, which removes the need for any other prestige-related features.
-- The points display and other gui elements stay at the top of the screen when the tree scrolls.
-- Added getter/setter functions for the amounts and effects of most Big Features
-- Moved modInfo to game.js, added a spot in modInfo for a Discord link, changelog link.
-    Also added a separate mod version from the TMT version in VERSION.
-- Tree structure is based on layer data, no index.html editing is needed.
-- Tmp does not need to be manually updated.
-- You don't have to have the same amount of upgrades in every row (and challs and buyables)
-- "unlocked" is optional for all Big Components (defaults to true).
-- All displays will update correctly.
-- Changelog is no longer in index.html at all.
-- Generation of Points now happens in the main game loop
-- Changed the reset functions to make keeping things easier
-- Renamed many things to increase readability (see the list in the link below)
-- Improved documentation based on feedback
-
-  [For a full list of changes to the format and functionality of existing things, click here.](2.0-format-changes.md)
-
-
-
-### v1.3.5:
-
-- Completely automated convertToDecimal, now you never have to worry about it again.
-- Branches can be defined without a color id. But they can also use hex values for color ids!
-- Created a tutorial for getting started with TMT and Github.
-- Page title is now automatically taken from mod name.
-
-### v1.3.4 - 10/8/20
-
-- Added "midsection" feature to add things to a tab's layout while still keeping the standard layout.
-- Fix for being able to buy more buyables than you should.
-
-### v1.3.3 - 10/7/20
-- Fix for the "order of operations" issue in temp.
-
-### v1.3.1 - 10/7/20
-
-- Added custom CSS and tooltips for Layer Nodes.
-- Added custom CSS for upgrades, buyables, milestones, and challenges, both individually and layer-wide.
-- You can now use HTML in most display text!
-- You can now make milestones unlockable and not display immediately.
-- Fixed importing saves, and issue with upgrades not appearing, and probably more.
-- Optional "name" layer feature, used in confirmation messages.
-
-## v1.3: Tabception... ception! - 10/7/20
-
-- Added subtabs! And also a Micro-tab component to let you make smaller subtab-esque areas anywhere.
-- Added a "custom" prestige formula type, and a number of features to support it.
-- Added points/sec display (can be disabled).
-- Added h-line, v-line and image-display components, plus components for individual upgrades, challenges, and milestones.
-- Added upgEffect, buyableEffect, and challEffect functions.
-- Added "hide completed challenges" setting.
-- Moved old changelogs to a separate place.
-- Fixed hasMilestone and incr_order.
-- Static layers now show the currency amount needed for the next one if you can buy max.
-
-
-
-### v1.2.4 - 10/4/20
-
-- Layers are now highlighted if you can buy an upgrade, and a new feature, shouldNotify,
-lets you make it highlight other ways.
-- Fixed bugs with hasUpg, hasChall, hasMilestone, and inChallenge.
-- Changed the sample code to use the above functions for convenience.
-
-### v1.2.3 - 10/3/20
-
-- Added a row component, which displays a list of objects in a row.
-- Added a column component, which displays a list of objects in a column (useful within a row).
-- Changed blanks to have a customizable width and height.
-
-## v1.2: This Changes Everything! - 10/3/20
-
-- Many layer features can now be static values or functions. (This made some formats change,
-which will break old things)
-- You can now use the "this" keyword, to make code easier to transfer when making new layers.
-- Also added "this.layer", which is the current layer's name, and works on existing subfeatures
-(e.g. individual upgrades) as well! Subfeatures also have "this.id".
-- Fixed a big save issue. If you use a unique mod id, your save will never conflict with other mods.
-- Added a configurable offline time limit in modinfo at the top of index.html. (default 1 hour)
-- Added a few minor features, and updated the docs with new information.
-
-
-### v1.1.1:
-
-- You can define hotkeys directly from layer config.
-
-## v1.1: Enhanced Edition
-
-- Added "Buyables", which can function like Space Buildings or Enhancers.
-- Custom CSS can now be used on any component! Make the third argument an object with CSS
-parameters.
-- Lots of minor good things.
-
-
-## v1.0:
-- First release.
+## [0.1.0] - Initial Release
