@@ -1,13 +1,13 @@
 {
-	"title": "Profectus",
-	"description": "A project made in Profectus",
-	"id": "",
-	"author": "",
+	"title": "Meat Yeet Idle",
+	"description": "Yeet Your Meat",
+	"id": "MEATYEET",
+	"author": "people",
 	"discordName": "",
 	"discordLink": "",
 
-	"versionNumber": "0.0",
-	"versionTitle": "Initial Commit",
+	"versionNumber": "0.1",
+	"versionTitle": "Kinda Sus",
 
 	"allowGoBack": true,
 	"defaultShowSmall": false,
@@ -18,7 +18,7 @@
 	"initialTabs": [ "main" ],
 
 	"maxTickLength": 3600,
-	"offlineLimit": 1,
+	"offlineLimit": 100,
 	"enablePausing": true,
 	"exportEncoding": "base64"
 }
